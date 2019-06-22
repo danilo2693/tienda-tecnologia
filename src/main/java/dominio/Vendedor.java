@@ -38,7 +38,7 @@ public class Vendedor {
     		throw new GarantiaExtendidaException(NO_SE_ENCUETRA_UN_PRODUCTO_CON_ESTE_CODIGO);
     	}else if(tieneGarantia(codigo)){
     		throw new GarantiaExtendidaException(EL_PRODUCTO_TIENE_GARANTIA);
-    	}else if(contarVocales(codigo) == CANTIDAD_VOCALES){
+    	}else if(tieneTresVocales(codigo)){
     		throw new GarantiaExtendidaException(ESTE_PRODUCTo_HO_CUENTA_CON_GARANTIA_EXTENDIDA);
     	}else if(producto.getPrecio() > PRECIO_PRODUCTO){
     		double precioGarantia = calcularPrecioGarantia(precioProducto, VEINTE_PORCIENTO);    	
@@ -53,7 +53,7 @@ public class Vendedor {
     	}
     }
     
-    public int contarVocales(String codigo){
+    public boolean tieneTresVocales(String codigo){
     	int cantidadVocales = 0;
     	String codigoSinMayusculas = codigo.toLowerCase();
     	int tamanioStringCodigo = codigo.length();    	
@@ -63,7 +63,11 @@ public class Vendedor {
 				cantidadVocales++;
 			}			
 		}    	
-    	return cantidadVocales;
+    	if(cantidadVocales == CANTIDAD_VOCALES){
+    		return true;
+    	}else{
+    		return false;
+    	}    	
     }
     
     public double calcularPrecioGarantia(double precio, double porcentaje){
