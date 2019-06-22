@@ -40,13 +40,13 @@ public class Vendedor {
     		throw new GarantiaExtendidaException(EL_PRODUCTO_TIENE_GARANTIA);
     	}else if(tieneTresVocales(codigo)){
     		throw new GarantiaExtendidaException(ESTE_PRODUCTo_HO_CUENTA_CON_GARANTIA_EXTENDIDA);
-    	}else if(producto.getPrecio() > PRECIO_PRODUCTO){
-    		double precioGarantia = calcularPrecioGarantia(precioProducto, VEINTE_PORCIENTO);    	
+    	}else if(precioMayorA500000(producto.getPrecio())){
+    		double precioGarantia = precioProducto * VEINTE_PORCIENTO;    	
     		Date fechaFinGarantia = calcularFechaFinGarantia(DOSCIENTOS_DIAS_DE_GARANTIA);    		
     		GarantiaExtendida garantiaExtendida = new GarantiaExtendida(producto, fechaSolicitudGarantia, fechaFinGarantia, precioGarantia, nombreCliente);
     		repositorioGarantia.agregar(garantiaExtendida);
     	}else{
-    		double precioGarantia = calcularPrecioGarantia(precioProducto, DIEZ_PORCIENTO);
+    		double precioGarantia = precioProducto * DIEZ_PORCIENTO;
     		Date fechaFinGarantia = calcularFechaFinGarantia(CIEN_DIAS_DE_GARANTIA);    		
     		GarantiaExtendida garantiaExtendida = new GarantiaExtendida(producto, fechaSolicitudGarantia, fechaFinGarantia, precioGarantia, nombreCliente);
     		repositorioGarantia.agregar(garantiaExtendida);
@@ -70,8 +70,12 @@ public class Vendedor {
     	}    	
     }
     
-    public double calcularPrecioGarantia(double precio, double porcentaje){
-    	return precio*porcentaje;
+    public boolean precioMayorA500000(double precio){
+    	if(precio > PRECIO_PRODUCTO){
+    		return true;
+    	}else{
+    		return false;
+    	}
     }
     
     public Date calcularFechaFinGarantia(int diasExtensionGarantia){
